@@ -7,16 +7,22 @@
     "start": "ts-node src/server.ts",
     "start:dev": "nodemon --exec ts-node src/server.ts",
     "build": "tsc",
+    "train": "nodemon --exec ts-node src/train.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "MIT",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^17.4.2",
+    "dotenv": "^16.0.0",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
     "moment": "^2.29.4",
-    "mongoose": "^9.9.3"
+    "mongodb": "^3.2.6",
+    "mongoose": "^6.2.9"
   },
   "devDependencies": {
+    "@types/ejs": "^3.1.5",
+    "@types/express": "^5.0.6",
     "@types/node": "^26.3.0",
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.1",

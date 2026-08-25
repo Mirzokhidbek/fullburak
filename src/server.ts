@@ -1,16 +1,15 @@
 import dotenv from "dotenv";
 dotenv.config();
 import mongoose from "mongoose";
-
-const PORT = process.env.PORT || 3000;
-const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/burak";
+import app from "./app";
 
 mongoose
-  .connect(MONGO_URL)
-  .then(() => {
-    console.log("MongoDB connected successfully");
-    console.log(`Server running on port ${PORT}`);
+  .connect(process.env.MONGO_URL as string, {})
+  .then((data) => {
+    console.log("MongoDB connection succeed");
+    const PORT = process.env.PORT ?? 3003;
+    app.listen(PORT, function () {
+      console.log(`The server is running successfully on port: ${PORT}`);
+    });
   })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-  });
+  .catch((err) => console.log("ERROR on connection MongoDB", err));
