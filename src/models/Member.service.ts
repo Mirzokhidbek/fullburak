@@ -29,6 +29,28 @@ class MemberService {
       throw new Errors(HTTPCode.BAD_REQUEST, Message.CREATE_FAILED);
     }
   }
+
+  /** BSSR LOGIN (ADMIN / RESTAURANT) **/
+  public async processLogin(input: LoginInput): Promise<Member> {
+    const member = await this.memberModel
+      .findOne(
+        { memberNick: input.memberNick },
+        { memberNick: 1, memberPassword: 1 }
+      )
+      .exec();
+    if (!member) throw new Errors(HTTPCode.NOT_FOUND, Message.NO_MEMBER_NICK);
+
+    const isMatch = await bcrypt.compare(
+      input.memberPassword,
+      member.memberPassword
+    );
+    if (!isMatch) {
+      throw new Errors(HTTPCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
+    }
+
+    const result = await this.memberModel.findById(member._id).exec();
+    return result as unknown as Member;
+  }
 }
 
 export default MemberService;
