@@ -13,15 +13,24 @@
       Token-Based Authentication (JWT / SPA React)
       Browser Storages: Cookie, LocalStorage, SessionStorage
 
-  - Session Authentication:
-      express-session + connect-mongodb-session (Cookie Store in MongoDB)
-      req.session.member (Authentication state)
-      checkAuthSession (/admin/check-me)
-      logout (/admin/logout)
+  - Request Turlari:
+      1. Traditional Request (BSSR):
+         - HTML <form action="..." method="POST"> or URL link GET
+         - Server HTML sahifani (EJS) to'liq render qiladi yoki redirect beradi.
+         - Data `application/x-www-form-urlencoded` yoki `multipart/form-data` ko'rinishida uzatiladi.
+      2. REST API Request (SPA):
+         - Axios, Fetch, AJAX orqali asinxron yuboriladi.
+         - JSON formatida javob qaytaradi (`res.json()`), butun sahifa qayta yuklanmaydi.
 
-  - Product MVC & Middleware:
-      Product Schema, Enum, Service Model & Controller
-      verifyRestaurant Middleware (Access Control)
-      res.locals.member Browser Local Variables
-      makeUploader Multer Middleware for Product Images (/public/uploads/products)
+  - Admin Login & Signup Jarayoni:
+      1. Admin kiritgan `memberNick` bo'yicha bazadan qidiriladi (`findOne`).
+      2. `bcrypt.compare` orqali kiritilgan parol bazadagi hash bilan solishtiriladi.
+      3. Ma'lumot to'g'ri bo'lsa, `req.session.member` ga yoziladi va MongoDB `sessions` collectionga saqlanadi (`connect-mongodb-session`).
+      4. Brauzerga `connect.sid` shifrlangan cookie yuboriladi.
+      5. Muvaffaqiyatli kirishdan so'ng `/admin/product/all` sahifasiga yo'naltiriladi (`res.redirect`).
+
+  - Admin Logout Jarayoni:
+      1. Foydalanuvchi `/admin/logout` linkini bosadi.
+      2. `req.session.destroy(...)` orqali MongoDB-dagi sessiya o'chiriladi.
+      3. Cookie bekor qilinadi va foydalanuvchi `/admin` bosh sahifasiga qaytariladi.
 */

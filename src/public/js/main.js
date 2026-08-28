@@ -5,7 +5,7 @@
 $(document).ready(function () {
   console.log("Burak Admin Suite Initialized.");
 
-  // 1. Multi-Image Upload Live Preview
+  // 1. Multi-Image Upload Live Preview (Products)
   $("#productImagesInput").on("change", function () {
     const previewBox = $("#imagePreviewContainer");
     previewBox.empty();
@@ -33,7 +33,21 @@ $(document).ready(function () {
     }
   });
 
-  // 2. AJAX Product Status Change Handler
+  // 2. Single Member Image Upload Preview (Signup)
+  $("#memberImageInput").on("change", function () {
+    const file = this.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        $("#memberImagePreview")
+          .attr("src", e.target.result)
+          .removeClass("d-none");
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // 3. AJAX Product Status Change Handler
   $(".product-status-select").on("change", function () {
     const id = $(this).data("id");
     const productStatus = $(this).val();
@@ -57,7 +71,7 @@ $(document).ready(function () {
       });
   });
 
-  // 3. Password Reveal Toggle
+  // 4. Password Reveal Toggle
   $(".btn-toggle-password").on("click", function () {
     const targetInput = $($(this).data("target"));
     const icon = $(this).find("i");
