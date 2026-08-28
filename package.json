@@ -22,7 +22,8 @@
     "moment": "^2.29.4",
     "mongodb": "^3.2.6",
     "mongoose": "^6.2.9",
-    "morgan": "^1.11.0"
+    "morgan": "^1.11.0",
+    "multer": "^2.3.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -31,6 +32,7 @@
     "@types/express": "^5.0.6",
     "@types/express-session": "^1.19.0",
     "@types/morgan": "^1.9.10",
+    "@types/multer": "^2.2.0",
     "@types/node": "^26.3.0",
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.1",

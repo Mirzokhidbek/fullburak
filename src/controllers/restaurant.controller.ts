@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { T } from "../libs/types/common";
 import Errors, { HTTPCode, Message } from "../libs/Errors";
 import MemberService from "../models/Member.service";
@@ -47,7 +47,7 @@ restaurantController.processSignup = async (req: Request, res: Response) => {
     const result = await memberService.processSignup(newMember);
     req.session.member = JSON.parse(JSON.stringify(result));
     req.session.save(function () {
-      res.send(result);
+      res.redirect("/admin/product/all");
     });
   } catch (err) {
     console.log("Error, processSignup:", err);
@@ -64,7 +64,7 @@ restaurantController.processLogin = async (req: Request, res: Response) => {
 
     req.session.member = JSON.parse(JSON.stringify(result));
     req.session.save(function () {
-      res.send(result);
+      res.redirect("/admin/product/all");
     });
   } catch (err) {
     console.log("Error, processLogin:", err);
@@ -77,7 +77,7 @@ restaurantController.logout = async (req: Request, res: Response) => {
   try {
     console.log("logout");
     req.session.destroy(function () {
-      res.send("Logged out successfully");
+      res.redirect("/admin");
     });
   } catch (err) {
     console.log("Error, logout:", err);
@@ -101,6 +101,20 @@ restaurantController.checkAuthSession = async (
     console.log("Error, checkAuthSession:", err);
     if (err instanceof Errors) res.status(err.code).json(err);
     else res.status(Errors.standard.code).json(Errors.standard);
+  }
+};
+
+restaurantController.verifyRestaurant = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.session?.member?.memberType === MemberType.RESTAURANT) {
+    req.member = req.session.member;
+    next();
+  } else {
+    const message = `<script> alert('${Message.NOT_AUTHENTICATED}'); window.location.replace('/admin/login'); </script>`;
+    res.send(message);
   }
 };
 

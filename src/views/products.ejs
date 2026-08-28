@@ -1,0 +1,57 @@
+<%- include('includes/header') %>
+
+<main class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark mb-0">
+      <i class="fa-solid fa-layer-group text-warning me-2"></i> Product Management
+    </h2>
+    <button class="btn btn-warning fw-bold px-4 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#addProductModal">
+      <i class="fa-solid fa-plus me-1"></i> Add Product
+    </button>
+  </div>
+
+  <div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col" class="ps-4">#</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Collection</th>
+              <th scope="col">Size / Volume</th>
+              <th scope="col">Price</th>
+              <th scope="col">Left Count</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (products && products.length) { %>
+              <% products.forEach((product, index) => { %>
+                <tr>
+                  <th scope="row" class="ps-4"><%= index + 1 %></th>
+                  <td class="fw-semibold"><%= product.productName %></td>
+                  <td><span class="badge bg-secondary"><%= product.productCollection %></span></td>
+                  <td><%= product.productSize || product.productVolume %></td>
+                  <td class="fw-bold text-success">$<%= product.productPrice %></td>
+                  <td><%= product.productLeftCount %></td>
+                  <td>
+                    <span class="badge <%= product.productStatus === 'PROCESS' ? 'bg-success' : 'bg-warning' %>">
+                      <%= product.productStatus %>
+                    </span>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center py-4 text-muted">No products found. Click 'Add Product' to create one!</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('includes/footer') %>

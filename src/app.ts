@@ -34,6 +34,11 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  res.locals.member = req.session?.member;
+  next();
+});
+
 /** 3-VIEWS **/
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

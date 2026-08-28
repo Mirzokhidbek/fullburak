@@ -38,3 +38,11 @@ declare module "express-session" {
     member: Member;
   }
 }
+
+declare global {
+  namespace Express {
+    interface Request {
+      member?: Member;
+    }
+  }
+}
