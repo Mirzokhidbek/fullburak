@@ -32,3 +32,9 @@ export interface LoginInput {
   memberNick: string;
   memberPassword: string;
 }
+
+declare module "express-session" {
+  interface SessionData {
+    member: Member;
+  }
+}
