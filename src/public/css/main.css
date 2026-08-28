@@ -1,0 +1,11 @@
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.navbar-brand {
+  letter-spacing: 0.5px;
+}
+
+.footer {
+  font-size: 0.9rem;
+}
