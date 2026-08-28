@@ -45,8 +45,10 @@ restaurantController.processSignup = async (req: Request, res: Response) => {
     newMember.memberType = MemberType.RESTAURANT;
 
     const result = await memberService.processSignup(newMember);
-
-    res.send(result);
+    req.session.member = result;
+    req.session.save(function () {
+      res.send(result);
+    });
   } catch (err) {
     console.log("Error, processSignup:", err);
     if (err instanceof Errors) res.status(err.code).json(err);
@@ -60,9 +62,43 @@ restaurantController.processLogin = async (req: Request, res: Response) => {
     const input: LoginInput = req.body;
     const result = await memberService.processLogin(input);
 
-    res.send(result);
+    req.session.member = result;
+    req.session.save(function () {
+      res.send(result);
+    });
   } catch (err) {
     console.log("Error, processLogin:", err);
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standard.code).json(Errors.standard);
+  }
+};
+
+restaurantController.logout = async (req: Request, res: Response) => {
+  try {
+    console.log("logout");
+    req.session.destroy(function () {
+      res.send("Logged out successfully");
+    });
+  } catch (err) {
+    console.log("Error, logout:", err);
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standard.code).json(Errors.standard);
+  }
+};
+
+restaurantController.checkAuthSession = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    console.log("checkAuthSession");
+    if (req.session?.member) {
+      res.send(`Hi ${req.session.member.memberNick}`);
+    } else {
+      res.send(Message.NOT_AUTHENTICATED);
+    }
+  } catch (err) {
+    console.log("Error, checkAuthSession:", err);
     if (err instanceof Errors) res.status(err.code).json(err);
     else res.status(Errors.standard.code).json(Errors.standard);
   }
