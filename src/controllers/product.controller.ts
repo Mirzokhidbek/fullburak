@@ -53,7 +53,7 @@ productController.updateChosenProduct = async (
 ) => {
   try {
     console.log("updateChosenProduct");
-    const id = req.params.id;
+    const id = String(req.params.id);
     const result = await productService.updateChosenProduct(id, req.body);
     res.json({ data: result });
   } catch (err) {
