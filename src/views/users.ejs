@@ -93,31 +93,6 @@
   </div>
 </main>
 
-<script>
-  $(document).ready(function() {
-    $('.user-status-select').on('change', function() {
-      const id = $(this).data('id');
-      const memberStatus = $(this).val();
-
-      axios.post('/admin/user/edit', {
-        _id: id,
-        memberStatus: memberStatus
-      })
-      .then(response => {
-        const badge = $(`#user-badge-${id}`);
-        badge
-          .removeClass('active block delete')
-          .addClass(memberStatus.toLowerCase())
-          .text(memberStatus);
-        badge.css("transform", "scale(1.15)");
-        setTimeout(() => badge.css("transform", "scale(1)"), 200);
-      })
-      .catch(err => {
-        alert("Failed to update user status!");
-        console.error(err);
-      });
-    });
-  });
-</script>
+<script src="/js/users.js"></script>
 
 <%- include('includes/footer') %>

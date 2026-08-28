@@ -14,23 +14,18 @@
       Browser Storages: Cookie, LocalStorage, SessionStorage
 
   - Request Turlari:
-      1. Traditional Request (BSSR):
-         - HTML <form action="..." method="POST"> or URL link GET
-         - Server HTML sahifani (EJS) to'liq render qiladi yoki redirect beradi.
-         - Data `application/x-www-form-urlencoded` yoki `multipart/form-data` ko'rinishida uzatiladi.
-      2. REST API Request (SPA):
-         - Axios, Fetch, AJAX orqali asinxron yuboriladi.
-         - JSON formatida javob qaytaradi (`res.json()`), butun sahifa qayta yuklanmaydi.
+      1. Traditional Request (BSSR): Form submit, full page reload / redirect.
+      2. REST API Request (SPA): Axios/fetch, JSON data, dynamic DOM update.
 
-  - Admin Login & Signup Jarayoni:
-      1. Admin kiritgan `memberNick` bo'yicha bazadan qidiriladi (`findOne`).
-      2. `bcrypt.compare` orqali kiritilgan parol bazadagi hash bilan solishtiriladi.
-      3. Ma'lumot to'g'ri bo'lsa, `req.session.member` ga yoziladi va MongoDB `sessions` collectionga saqlanadi (`connect-mongodb-session`).
-      4. Brauzerga `connect.sid` shifrlangan cookie yuboriladi.
-      5. Muvaffaqiyatli kirishdan so'ng `/admin/product/all` sahifasiga yo'naltiriladi (`res.redirect`).
+  - Validation Turlari:
+      1. Frontend Validation (Client-side):
+         - jQuery yoki Vanilla JS orqali form yuborilishidan oldin ma'lumotlar to'liqligi va formatini tekshirish.
+         - Serverga ortiqcha so'rov ketishini oldini oladi va foydalanuvchiga tezkor xabar beradi.
+      2. Backend Validation (Server-side):
+         - Controller va Service modellarida biznes mantiqni tekshirish (masalan, faqat 1 ta restoran mavjud bo'lishi).
+      3. Database Validation (Schema-level):
+         - Mongoose Schema `required`, `enum`, `unique: true` indekslari orqali ma'lumotlar yaxlitligini ta'minlash.
 
-  - Admin Logout Jarayoni:
-      1. Foydalanuvchi `/admin/logout` linkini bosadi.
-      2. `req.session.destroy(...)` orqali MongoDB-dagi sessiya o'chiriladi.
-      3. Cookie bekor qilinadi va foydalanuvchi `/admin` bosh sahifasiga qaytariladi.
+  - Image Preloading:
+      - `FileReader` JavaScript API orqali foydalanuvchi fayl tanlagan zahoti rasmni serverga yuklamasdan turib brauzerda ko'rsatish (`readAsDataURL`).
 */

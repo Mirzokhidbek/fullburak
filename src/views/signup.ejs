@@ -11,7 +11,7 @@
     </div>
 
     <div class="auth-body">
-      <form action="/admin/signup" method="POST" enctype="multipart/form-data">
+      <form id="signupForm" action="/admin/signup" method="POST" enctype="multipart/form-data">
         <div class="row g-3">
           <div class="col-12">
             <label class="form-label fw-semibold small text-muted">RESTAURANT NAME</label>
@@ -70,5 +70,7 @@
     </div>
   </div>
 </div>
+
+<script src="/js/signup.js"></script>
 
 <%- include('includes/footer') %>

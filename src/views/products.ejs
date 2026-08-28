@@ -58,10 +58,10 @@
                   <span class="badge bg-light text-dark border px-2 py-1 fw-semibold"><%= product.productCollection %></span>
                 </td>
                 <td>
-                  <span class="text-muted"><%= product.productSize || product.productVolume || '-' %></span>
+                  <span class="text-muted"><%= product.productSize || (product.productVolume ? product.productVolume + 'L' : '-') %></span>
                 </td>
                 <td>
-                  <span class="fw-bold text-success fs-6">$<%= product.productPrice.toFixed(2) %></span>
+                  <span class="fw-bold text-success fs-6">$<%= Number(product.productPrice).toFixed(2) %></span>
                 </td>
                 <td>
                   <span class="fw-semibold <%= product.productLeftCount <= 5 ? 'text-danger' : 'text-dark' %>">
@@ -118,7 +118,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-        <form action="/admin/product/create" method="POST" enctype="multipart/form-data">
+        <form id="addProductForm" action="/admin/product/create" method="POST" enctype="multipart/form-data">
           <div class="modal-body p-4">
             <div class="row g-3">
               <div class="col-md-6">
@@ -138,7 +138,7 @@
 
               <div class="col-md-6">
                 <label class="form-label fw-semibold small text-muted">COLLECTION TYPE</label>
-                <select class="form-select-modern w-100" name="productCollection" required>
+                <select id="productCollectionSelect" class="form-select-modern w-100" name="productCollection" required>
                   <option value="DISH" selected>DISH (Meals & Steaks)</option>
                   <option value="DRINK">DRINK (Beverages)</option>
                   <option value="DESERT">DESERT (Baklava, Sweets)</option>
@@ -146,7 +146,8 @@
                 </select>
               </div>
 
-              <div class="col-md-6">
+              <!-- Portion Size (For DISH, DESERT, OTHER) -->
+              <div id="productSizeBox" class="col-md-6">
                 <label class="form-label fw-semibold small text-muted">PORTION SIZE</label>
                 <select class="form-select-modern w-100" name="productSize">
                   <option value="NORMAL" selected>NORMAL</option>
@@ -156,14 +157,26 @@
                 </select>
               </div>
 
+              <!-- Bottle Volume (For DRINK) -->
+              <div id="productVolumeBox" class="col-md-6 d-none">
+                <label class="form-label fw-semibold small text-muted">BOTTLE VOLUME (L)</label>
+                <select class="form-select-modern w-100" name="productVolume">
+                  <option value="0.5">0.5 Liters</option>
+                  <option value="1" selected>1 Liter</option>
+                  <option value="1.2">1.2 Liters</option>
+                  <option value="1.5">1.5 Liters</option>
+                  <option value="2">2 Liters</option>
+                </select>
+              </div>
+
               <div class="col-12">
                 <label class="form-label fw-semibold small text-muted">PRODUCT IMAGES (MAX 5 IMAGES)</label>
                 <div class="image-upload-box" onclick="$('#productImagesInput').click()">
                   <i class="fa-solid fa-cloud-arrow-up text-warning fa-2x mb-2"></i>
                   <div class="fw-bold text-dark">Click to browse product photos</div>
-                  <div class="small text-muted">PNG, JPG, JPEG or WEBP formats supported</div>
+                  <div class="small text-muted">PNG, JPG, JPEG or WEBP formats supported (Max 5MB per photo)</div>
                 </div>
-                <input type="file" id="productImagesInput" name="productImages" class="d-none" multiple required>
+                <input type="file" id="productImagesInput" name="productImages" class="d-none" multiple accept="image/*" required>
                 <div id="imagePreviewContainer" class="preview-container"></div>
               </div>
 
@@ -185,5 +198,7 @@
     </div>
   </div>
 </main>
+
+<script src="/js/products.js"></script>
 
 <%- include('includes/footer') %>
