@@ -1,6 +1,7 @@
 import ProductModel from "../schema/Product.model";
 import { Product, ProductInput } from "../libs/types/product";
 import Errors, { HTTPCode, Message } from "../libs/Errors";
+import { shapeIntoMongooseObjectId } from "../libs/config";
 
 class ProductService {
   private readonly productModel;
@@ -31,16 +32,12 @@ class ProductService {
     id: string,
     input: ProductInput
   ): Promise<Product> {
-    try {
-      const result = await this.productModel
-        .findByIdAndUpdate({ _id: id }, input, { new: true })
-        .exec();
-      if (!result) throw new Errors(HTTPCode.NOT_FOUND, Message.NO_DATA_FOUND);
-      return (result as any).toJSON() as Product;
-    } catch (err) {
-      console.error("Error, updateChosenProduct:", err);
-      throw new Errors(HTTPCode.BAD_REQUEST, Message.UPDATE_FAILED);
-    }
+    id = shapeIntoMongooseObjectId(id);
+    const result = await this.productModel
+      .findByIdAndUpdate({ _id: id }, input, { new: true })
+      .exec();
+    if (!result) throw new Errors(HTTPCode.NOT_FOUND, Message.NO_DATA_FOUND);
+    return (result as any).toJSON() as Product;
   }
 }
 
