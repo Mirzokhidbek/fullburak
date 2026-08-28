@@ -45,7 +45,7 @@ restaurantController.processSignup = async (req: Request, res: Response) => {
     newMember.memberType = MemberType.RESTAURANT;
 
     const result = await memberService.processSignup(newMember);
-    req.session.member = result;
+    req.session.member = JSON.parse(JSON.stringify(result));
     req.session.save(function () {
       res.send(result);
     });
@@ -62,7 +62,7 @@ restaurantController.processLogin = async (req: Request, res: Response) => {
     const input: LoginInput = req.body;
     const result = await memberService.processLogin(input);
 
-    req.session.member = result;
+    req.session.member = JSON.parse(JSON.stringify(result));
     req.session.save(function () {
       res.send(result);
     });
@@ -91,7 +91,7 @@ restaurantController.checkAuthSession = async (
   res: Response
 ) => {
   try {
-    console.log("checkAuthSession");
+    console.log("checkAuthSession, req.session.member:", req.session?.member);
     if (req.session?.member) {
       res.send(`Hi ${req.session.member.memberNick}`);
     } else {

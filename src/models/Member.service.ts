@@ -51,7 +51,7 @@ class MemberService {
     }
 
     const result = await this.memberModel.findById(member._id).exec();
-    return result as unknown as Member;
+    return (result as any).toJSON() as Member;
   }
 
   /** BSSR SIGNUP (ADMIN / RESTAURANT) **/
@@ -92,7 +92,7 @@ class MemberService {
     }
 
     const result = await this.memberModel.findById(member._id).exec();
-    return result as unknown as Member;
+    return (result as any).toJSON() as Member;
   }
 }
 
