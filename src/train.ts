@@ -12,4 +12,10 @@
       Session-Based Authentication (BSSR / EJS Cookies)
       Token-Based Authentication (JWT / SPA React)
       Browser Storages: Cookie, LocalStorage, SessionStorage
+
+  - Session Authentication:
+      express-session + connect-mongodb-session (Cookie Store in MongoDB)
+      req.session.member (Authentication state)
+      checkAuthSession (/admin/check-me)
+      logout (/admin/logout)
 */
