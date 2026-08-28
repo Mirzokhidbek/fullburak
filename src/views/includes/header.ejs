@@ -26,17 +26,34 @@
       </button>
       <div class="collapse navbar-collapse" id="adminNavbar">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-          <li class="nav-item">
-            <a class="nav-link" href="/admin"><i class="fa-solid fa-house me-1"></i> Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/login"><i class="fa-solid fa-right-to-bracket me-1"></i> Login</a>
-          </li>
-          <li class="nav-item ms-lg-2">
-            <a class="btn btn-outline-warning text-warning px-3" href="/admin/signup">
-              <i class="fa-solid fa-user-plus me-1"></i> Signup
-            </a>
-          </li>
+          <% if (member) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin"><i class="fa-solid fa-house me-1"></i> Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/product/all"><i class="fa-solid fa-layer-group me-1"></i> Products</a>
+            </li>
+            <li class="nav-item ms-lg-2">
+              <span class="navbar-text text-warning me-3 fw-medium">
+                <i class="fa-solid fa-store me-1"></i> <%= member.memberNick %>
+              </span>
+              <a class="btn btn-outline-danger btn-sm px-3" href="/admin/logout">
+                <i class="fa-solid fa-right-from-bracket me-1"></i> Logout
+              </a>
+            </li>
+          <% } else { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin"><i class="fa-solid fa-house me-1"></i> Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/login"><i class="fa-solid fa-right-to-bracket me-1"></i> Login</a>
+            </li>
+            <li class="nav-item ms-lg-2">
+              <a class="btn btn-outline-warning text-warning px-3" href="/admin/signup">
+                <i class="fa-solid fa-user-plus me-1"></i> Signup
+              </a>
+            </li>
+          <% } %>
         </ul>
       </div>
     </div>

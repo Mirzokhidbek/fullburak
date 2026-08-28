@@ -18,4 +18,10 @@
       req.session.member (Authentication state)
       checkAuthSession (/admin/check-me)
       logout (/admin/logout)
+
+  - Product MVC & Middleware:
+      Product Schema, Enum, Service Model & Controller
+      verifyRestaurant Middleware (Access Control)
+      res.locals.member Browser Local Variables
+      makeUploader Multer Middleware for Product Images (/public/uploads/products)
 */
