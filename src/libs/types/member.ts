@@ -33,6 +33,18 @@ export interface LoginInput {
   memberPassword: string;
 }
 
+export interface MemberUpdateInput {
+  _id: Types.ObjectId | string;
+  memberStatus?: MemberStatus;
+  memberPhone?: string;
+  memberNick?: string;
+  memberPassword?: string;
+  memberAddress?: string;
+  memberDesc?: string;
+  memberImage?: string;
+  memberPoints?: number;
+}
+
 declare module "express-session" {
   interface SessionData {
     member: Member;

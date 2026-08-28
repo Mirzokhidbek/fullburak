@@ -1,8 +1,14 @@
 import MemberModel from "../schema/Member.model";
-import { Member, MemberInput, LoginInput } from "../libs/types/member";
+import {
+  Member,
+  MemberInput,
+  LoginInput,
+  MemberUpdateInput,
+} from "../libs/types/member";
 import Errors, { HTTPCode, Message } from "../libs/Errors";
 import { MemberStatus, MemberType } from "../libs/enums/member.enum";
 import bcrypt from "bcryptjs";
+import { shapeIntoMongooseObjectId } from "../libs/config";
 
 class MemberService {
   private readonly memberModel;
@@ -92,6 +98,25 @@ class MemberService {
     }
 
     const result = await this.memberModel.findById(member._id).exec();
+    return (result as any).toJSON() as Member;
+  }
+
+  /** BSSR: Get All Users **/
+  public async getUsers(): Promise<Member[]> {
+    const result = await this.memberModel
+      .find({ memberType: MemberType.USER })
+      .exec();
+    if (!result) throw new Errors(HTTPCode.NOT_FOUND, Message.NO_DATA_FOUND);
+    return result as unknown as Member[];
+  }
+
+  /** BSSR: Update Chosen User (Status/Details) **/
+  public async updateChosenUser(input: MemberUpdateInput): Promise<Member> {
+    input._id = shapeIntoMongooseObjectId(input._id);
+    const result = await this.memberModel
+      .findByIdAndUpdate({ _id: input._id }, input, { new: true })
+      .exec();
+    if (!result) throw new Errors(HTTPCode.NOT_MODIFIED, Message.UPDATE_FAILED);
     return (result as any).toJSON() as Member;
   }
 }
