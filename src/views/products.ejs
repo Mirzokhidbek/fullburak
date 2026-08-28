@@ -1,42 +1,56 @@
 <%- include('includes/header') %>
 
-<main class="container my-5">
+<main class="container my-5 flex-grow-1">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-dark mb-0">
-      <i class="fa-solid fa-layer-group text-warning me-2"></i> Product Management
-    </h2>
-    <button class="btn btn-warning fw-bold px-4 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#addProductModal">
+    <div>
+      <h2 class="fw-bold text-dark mb-1">
+        <i class="fa-solid fa-layer-group text-warning me-2"></i> Restaurant Products
+      </h2>
+      <p class="text-muted mb-0">Manage all restaurant menu items, pricing, and availability.</p>
+    </div>
+    <button class="btn btn-warning fw-bold px-4 py-2 shadow-sm rounded-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
       <i class="fa-solid fa-plus me-1"></i> Add Product
     </button>
   </div>
 
-  <div class="card border-0 shadow-sm rounded-4">
+  <!-- Products Table Card -->
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
     <div class="card-body p-0">
       <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
           <thead class="table-dark">
             <tr>
               <th scope="col" class="ps-4">#</th>
+              <th scope="col">Image</th>
               <th scope="col">Product Name</th>
               <th scope="col">Collection</th>
               <th scope="col">Size / Volume</th>
               <th scope="col">Price</th>
               <th scope="col">Left Count</th>
-              <th scope="col">Status</th>
+              <th scope="col" class="text-center">Status</th>
             </tr>
           </thead>
           <tbody>
             <% if (products && products.length) { %>
               <% products.forEach((product, index) => { %>
                 <tr>
-                  <th scope="row" class="ps-4"><%= index + 1 %></th>
-                  <td class="fw-semibold"><%= product.productName %></td>
-                  <td><span class="badge bg-secondary"><%= product.productCollection %></span></td>
-                  <td><%= product.productSize || product.productVolume %></td>
+                  <th scope="row" class="ps-4 text-muted"><%= index + 1 %></th>
+                  <td>
+                    <% if (product.productImages && product.productImages.length) { %>
+                      <img src="/<%= product.productImages[0].replace('public/', '') %>" alt="<%= product.productName %>" class="rounded-3 object-fit-cover" style="width: 50px; height: 50px;">
+                    <% } else { %>
+                      <div class="bg-secondary-subtle rounded-3 d-flex align-items-center justify-content-center text-muted" style="width: 50px; height: 50px;">
+                        <i class="fa-solid fa-image"></i>
+                      </div>
+                    <% } %>
+                  </td>
+                  <td class="fw-semibold text-dark"><%= product.productName %></td>
+                  <td><span class="badge bg-secondary-subtle text-secondary border px-2 py-1"><%= product.productCollection %></span></td>
+                  <td><%= product.productSize || product.productVolume || '-' %></td>
                   <td class="fw-bold text-success">$<%= product.productPrice %></td>
                   <td><%= product.productLeftCount %></td>
-                  <td>
-                    <span class="badge <%= product.productStatus === 'PROCESS' ? 'bg-success' : 'bg-warning' %>">
+                  <td class="text-center">
+                    <span class="badge <%= product.productStatus === 'PROCESS' ? 'bg-success' : 'bg-secondary' %> px-3 py-2">
                       <%= product.productStatus %>
                     </span>
                   </td>
@@ -44,11 +58,80 @@
               <% }) %>
             <% } else { %>
               <tr>
-                <td colspan="7" class="text-center py-4 text-muted">No products found. Click 'Add Product' to create one!</td>
+                <td colspan="8" class="text-center py-5 text-muted">
+                  <i class="fa-solid fa-box-open fa-3x mb-3 text-secondary d-block"></i>
+                  <h5>No products found in restaurant menu</h5>
+                  <p class="small text-muted mb-0">Click the <strong>Add Product</strong> button above to create your first item.</p>
+                </td>
               </tr>
             <% } %>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Product Modal -->
+  <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content rounded-4 border-0 shadow-lg">
+        <div class="modal-header bg-dark text-white border-0 py-3">
+          <h5 class="modal-title fw-bold" id="addProductModalLabel">
+            <i class="fa-solid fa-plus text-warning me-2"></i> Add New Product
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="/admin/product/create" method="POST" enctype="multipart/form-data">
+          <div class="modal-body p-4">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-medium">Product Name</label>
+                <input type="text" class="form-control" name="productName" placeholder="e.g. Steak Burger" required>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-medium">Price ($)</label>
+                <input type="number" step="0.01" class="form-control" name="productPrice" placeholder="12.99" required>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-medium">Left Count</label>
+                <input type="number" class="form-control" name="productLeftCount" placeholder="50" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-medium">Collection</label>
+                <select class="form-select" name="productCollection" required>
+                  <option value="DISH" selected>DISH</option>
+                  <option value="DRINK">DRINK</option>
+                  <option value="DESERT">DESERT</option>
+                  <option value="OTHER">OTHER</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-medium">Size</label>
+                <select class="form-select" name="productSize">
+                  <option value="NORMAL" selected>NORMAL</option>
+                  <option value="SMALL">SMALL</option>
+                  <option value="LARGE">LARGE</option>
+                  <option value="SET">SET</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-medium">Product Images (Up to 5 images)</label>
+                <input type="file" class="form-control" name="productImages" multiple required>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-medium">Product Description</label>
+                <textarea class="form-control" name="productDesc" rows="3" placeholder="Brief description of the product..."></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0 p-3 bg-light">
+            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-warning fw-bold px-4">Create Product</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
