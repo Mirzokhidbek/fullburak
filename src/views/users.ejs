@@ -1,73 +1,101 @@
 <%- include('includes/header') %>
 
-<main class="container my-5 flex-grow-1">
-  <div class="d-flex justify-content-between align-items-center mb-4">
+<main class="container-fluid px-lg-5 my-5 flex-grow-1">
+  <!-- Title Bar -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
-      <h2 class="fw-bold text-dark mb-1">
-        <i class="fa-solid fa-users text-warning me-2"></i> User Management
-      </h2>
-      <p class="text-muted mb-0">View and manage all registered customer accounts.</p>
+      <div class="d-flex align-items-center gap-2 mb-1">
+        <h2 class="fw-bold text-dark mb-0">Registered Customers</h2>
+        <span class="badge bg-dark rounded-pill px-3 py-1 fw-bold text-warning"><%= users ? users.length : 0 %> Users</span>
+      </div>
+      <p class="text-muted mb-0">Monitor customer activity, loyalty points, and account authorization states.</p>
     </div>
   </div>
 
   <!-- Users Table Card -->
-  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col" class="ps-4">#</th>
-              <th scope="col">User Nickname</th>
-              <th scope="col">Phone Number</th>
-              <th scope="col">Points</th>
-              <th scope="col">Status</th>
-              <th scope="col" class="text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% if (users && users.length) { %>
-              <% users.forEach((user, index) => { %>
-                <tr>
-                  <th scope="row" class="ps-4 text-muted"><%= index + 1 %></th>
-                  <td class="fw-semibold text-dark">
-                    <i class="fa-solid fa-user-circle text-secondary me-2"></i><%= user.memberNick %>
-                  </td>
-                  <td><%= user.memberPhone %></td>
-                  <td><span class="badge bg-warning-subtle text-warning-emphasis px-3 py-1 fw-bold"><%= user.memberPoints %> pts</span></td>
-                  <td>
-                    <span class="badge <%= user.memberStatus === 'ACTIVE' ? 'bg-success' : (user.memberStatus === 'BLOCK' ? 'bg-danger' : 'bg-secondary') %> px-3 py-2">
-                      <%= user.memberStatus %>
-                    </span>
-                  </td>
-                  <td class="text-center">
-                    <select class="form-select form-select-sm w-auto d-inline-block member-status-select" data-id="<%= user._id %>">
-                      <option value="ACTIVE" <%= user.memberStatus === 'ACTIVE' ? 'selected' : '' %>>ACTIVE</option>
-                      <option value="BLOCK" <%= user.memberStatus === 'BLOCK' ? 'selected' : '' %>>BLOCK</option>
-                      <option value="DELETE" <%= user.memberStatus === 'DELETE' ? 'selected' : '' %>>DELETE</option>
-                    </select>
-                  </td>
-                </tr>
-              <% }) %>
-            <% } else { %>
+  <div class="admin-table-container">
+    <div class="table-responsive">
+      <table class="table admin-table align-middle">
+        <thead>
+          <tr>
+            <th scope="col" class="ps-4">#</th>
+            <th scope="col">User</th>
+            <th scope="col">Phone Contact</th>
+            <th scope="col">Loyalty Points</th>
+            <th scope="col">Registered Date</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="text-center pe-4">Account Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (users && users.length) { %>
+            <% users.forEach((user, index) => { %>
               <tr>
-                <td colspan="6" class="text-center py-5 text-muted">
-                  <i class="fa-solid fa-users-slash fa-3x mb-3 text-secondary d-block"></i>
-                  <h5>No users registered yet</h5>
-                  <p class="small text-muted mb-0">Registered customer accounts will appear here automatically.</p>
+                <td class="ps-4 fw-bold text-muted"><%= index + 1 %></td>
+                <td>
+                  <div class="d-flex align-items-center gap-3">
+                    <% if (user.memberImage) { %>
+                      <img src="/<%= user.memberImage.replace('public/', '') %>" alt="<%= user.memberNick %>" class="rounded-circle" style="width: 44px; height: 44px; object-fit: cover;">
+                    <% } else { %>
+                      <div class="rounded-circle bg-warning bg-opacity-25 text-warning-emphasis fw-bold d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; font-size: 1.1rem;">
+                        <%= user.memberNick.charAt(0).toUpperCase() %>
+                      </div>
+                    <% } %>
+                    <div>
+                      <div class="fw-bold text-dark"><%= user.memberNick %></div>
+                      <div class="small text-muted">ID: <%= String(user._id).substring(0, 8) %>...</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="fw-medium text-slate-700">
+                    <i class="fa-solid fa-phone text-muted me-1 small"></i> <%= user.memberPhone %>
+                  </span>
+                </td>
+                <td>
+                  <span class="badge bg-warning bg-opacity-10 text-dark border border-warning border-opacity-25 px-3 py-2 fw-bold">
+                    <i class="fa-solid fa-coins text-warning me-1"></i> <%= user.memberPoints || 0 %> pts
+                  </span>
+                </td>
+                <td>
+                  <span class="text-muted small">
+                    <%= new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %>
+                  </span>
+                </td>
+                <td>
+                  <span id="user-badge-<%= user._id %>" class="badge-status <%= user.memberStatus.toLowerCase() %>">
+                    <%= user.memberStatus %>
+                  </span>
+                </td>
+                <td class="text-center pe-4">
+                  <select class="form-select-modern form-select-sm user-status-select" data-id="<%= user._id %>">
+                    <option value="ACTIVE" <%= user.memberStatus === 'ACTIVE' ? 'selected' : '' %>>ACTIVE</option>
+                    <option value="BLOCK" <%= user.memberStatus === 'BLOCK' ? 'selected' : '' %>>BLOCK</option>
+                    <option value="DELETE" <%= user.memberStatus === 'DELETE' ? 'selected' : '' %>>DELETE</option>
+                  </select>
                 </td>
               </tr>
-            <% } %>
-          </tbody>
-        </table>
-      </div>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="7" class="text-center py-5 text-muted">
+                <div class="p-4">
+                  <i class="fa-solid fa-users-slash fa-3x mb-3 text-secondary d-block"></i>
+                  <h5 class="fw-bold text-dark">No Customer Accounts Found</h5>
+                  <p class="small text-muted mb-0">When customers sign up through the mobile app / SPA, they will appear here automatically.</p>
+                </div>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
     </div>
   </div>
 </main>
 
 <script>
   $(document).ready(function() {
-    $('.member-status-select').on('change', function() {
+    $('.user-status-select').on('change', function() {
       const id = $(this).data('id');
       const memberStatus = $(this).val();
 
@@ -76,8 +104,13 @@
         memberStatus: memberStatus
       })
       .then(response => {
-        alert("User status updated successfully!");
-        window.location.reload();
+        const badge = $(`#user-badge-${id}`);
+        badge
+          .removeClass('active block delete')
+          .addClass(memberStatus.toLowerCase())
+          .text(memberStatus);
+        badge.css("transform", "scale(1.15)");
+        setTimeout(() => badge.css("transform", "scale(1)"), 200);
       })
       .catch(err => {
         alert("Failed to update user status!");

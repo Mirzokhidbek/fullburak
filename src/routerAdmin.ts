@@ -9,7 +9,11 @@ routerAdmin.get("/", restaurantController.goHome);
 routerAdmin.get("/login", restaurantController.getLogin);
 routerAdmin.post("/login", restaurantController.processLogin);
 routerAdmin.get("/signup", restaurantController.getSignup);
-routerAdmin.post("/signup", restaurantController.processSignup);
+routerAdmin.post(
+  "/signup",
+  makeUploader("members").single("memberImage"),
+  restaurantController.processSignup
+);
 routerAdmin.get("/logout", restaurantController.logout);
 routerAdmin.get("/check-me", restaurantController.checkAuthSession);
 

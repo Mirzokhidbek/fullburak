@@ -1,47 +1,71 @@
 <%- include('includes/header') %>
 
-<main class="container my-5 flex-grow-1 d-flex align-items-center justify-content-center">
-  <div class="col-md-7 col-lg-6">
-    <div class="card border-0 shadow-lg rounded-4">
-      <div class="card-body p-4 p-sm-5">
-        <div class="text-center mb-4">
-          <i class="fa-solid fa-user-plus text-warning fa-3x mb-3"></i>
-          <h3 class="fw-bold text-dark">Register Restaurant</h3>
-          <p class="text-muted">Fill out the details to register your restaurant admin account</p>
+<div class="auth-wrapper flex-grow-1">
+  <div class="auth-card" style="max-width: 540px;">
+    <div class="auth-header">
+      <div class="brand-icon mx-auto mb-3" style="width: 48px; height: 48px; font-size: 1.3rem;">
+        <i class="fa-solid fa-crown"></i>
+      </div>
+      <h3 class="fw-bold mb-1">Register Restaurant</h3>
+      <p class="text-slate-400 small mb-0" style="color: #94a3b8;">Establish your restaurant administrative root console</p>
+    </div>
+
+    <div class="auth-body">
+      <form action="/admin/signup" method="POST" enctype="multipart/form-data">
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label fw-semibold small text-muted">RESTAURANT NAME</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0" style="border-radius: var(--radius-md) 0 0 var(--radius-md); border-color: var(--light-border);">
+                <i class="fa-solid fa-store text-muted"></i>
+              </span>
+              <input type="text" class="form-control-modern form-control border-start-0" style="border-radius: 0 var(--radius-md) var(--radius-md) 0;" name="memberNick" placeholder="e.g. Burak Restaurant" required>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small text-muted">OFFICIAL PHONE</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0" style="border-radius: var(--radius-md) 0 0 var(--radius-md); border-color: var(--light-border);">
+                <i class="fa-solid fa-phone text-muted"></i>
+              </span>
+              <input type="text" class="form-control-modern form-control border-start-0" style="border-radius: 0 var(--radius-md) var(--radius-md) 0;" name="memberPhone" placeholder="998901234567" required>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small text-muted">ADMIN PASSWORD</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0" style="border-radius: var(--radius-md) 0 0 var(--radius-md); border-color: var(--light-border);">
+                <i class="fa-solid fa-lock text-muted"></i>
+              </span>
+              <input type="password" id="signupPassword" class="form-control-modern form-control border-start-0 border-end-0" name="memberPassword" placeholder="••••••••" required>
+              <button class="btn btn-light border border-start-0 btn-toggle-password" data-target="#signupPassword" type="button" style="border-radius: 0 var(--radius-md) var(--radius-md) 0; border-color: var(--light-border);">
+                <i class="fa-solid fa-eye text-muted"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-semibold small text-muted">RESTAURANT COVER LOGO (OPTIONAL)</label>
+            <input type="file" class="form-control-modern w-100" name="memberImage" accept="image/*">
+          </div>
+
+          <div class="col-12 mt-4">
+            <button type="submit" class="btn-gold w-100 py-3 fs-6">
+              <span>Create Restaurant Account</span>
+              <i class="fa-solid fa-arrow-right ms-1"></i>
+            </button>
+          </div>
         </div>
+      </form>
 
-        <form action="/admin/signup" method="POST">
-          <div class="mb-3">
-            <label for="memberNick" class="form-label fw-medium">Restaurant Nickname</label>
-            <div class="input-group">
-              <span class="input-group-text bg-light"><i class="fa-solid fa-user"></i></span>
-              <input type="text" class="form-control" id="memberNick" name="memberNick" placeholder="BurakResto" required>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="memberPhone" class="form-label fw-medium">Phone Number</label>
-            <div class="input-group">
-              <span class="input-group-text bg-light"><i class="fa-solid fa-phone"></i></span>
-              <input type="text" class="form-control" id="memberPhone" name="memberPhone" placeholder="998901234567" required>
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <label for="memberPassword" class="form-label fw-medium">Password</label>
-            <div class="input-group">
-              <span class="input-group-text bg-light"><i class="fa-solid fa-lock"></i></span>
-              <input type="password" class="form-control" id="memberPassword" name="memberPassword" placeholder="••••••••" required>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-warning w-100 py-2 fw-bold fs-5 shadow-sm">
-            Signup <i class="fa-solid fa-user-check ms-1"></i>
-          </button>
-        </form>
+      <div class="text-center mt-4">
+        <span class="text-muted small">Already registered?</span>
+        <a href="/admin/login" class="text-warning fw-bold text-decoration-none ms-1 small">Sign in to console</a>
       </div>
     </div>
   </div>
-</main>
+</div>
 
 <%- include('includes/footer') %>
