@@ -13,19 +13,20 @@
       Token-Based Authentication (JWT / SPA React)
       Browser Storages: Cookie, LocalStorage, SessionStorage
 
-  - Request Turlari:
-      1. Traditional Request (BSSR): Form submit, full page reload / redirect.
-      2. REST API Request (SPA): Axios/fetch, JSON data, dynamic DOM update.
-
-  - Validation Turlari:
-      1. Frontend Validation (Client-side):
-         - jQuery yoki Vanilla JS orqali form yuborilishidan oldin ma'lumotlar to'liqligi va formatini tekshirish.
-         - Serverga ortiqcha so'rov ketishini oldini oladi va foydalanuvchiga tezkor xabar beradi.
-      2. Backend Validation (Server-side):
-         - Controller va Service modellarida biznes mantiqni tekshirish (masalan, faqat 1 ta restoran mavjud bo'lishi).
-      3. Database Validation (Schema-level):
-         - Mongoose Schema `required`, `enum`, `unique: true` indekslari orqali ma'lumotlar yaxlitligini ta'minlash.
-
-  - Image Preloading:
-      - `FileReader` JavaScript API orqali foydalanuvchi fayl tanlagan zahoti rasmni serverga yuklamasdan turib brauzerda ko'rsatish (`readAsDataURL`).
+  - React & Single Page Application (SPA):
+      1. Virtual DOM & Reconciliation (Diffing algorithm)
+      2. Material UI (MUI): `ThemeProvider`, `createTheme`, Custom palette & typography.
+      3. React Router DOM: `<BrowserRouter>`, `<Routes>`, `<Route>`, `<NavLink>`, `useNavigate`, `useLocation`.
+      4. Header & Navbar Architecture (Dars 59-60):
+         - `NavbarHome`: Asosiy landing page uchun transparent/hero fonli navbar.
+         - `NavbarOther`: Ichki sahifalar (`/products`, `/orders`, `/user`, `/help`) uchun to'q fonli va sticky navbar.
+         - `Navbar`: Dinamik ravishda `location.pathname === "/"` bo'yicha tegishli navbarni tanlab render qiladi.
+         - Cart Badge: Savatdagi mahsulotlar soni indikatori.
+         - User Auth Menu: Avatar dropdown orqali Profile, My Orders va Logout boshqaruvi.
+         - Mobile Drawer: Mobil ekranlar uchun yon tomondan chiquvchi qulay menyu.
+      5. Luxury Footer Architecture:
+         - Brand gastronomiya tavsifi va ijtimoiy tarmoqlar (Instagram, Telegram, YouTube, Facebook).
+         - Restoran menyu toifalari va buyurtma kuzatish havolalari.
+         - Kontakt ma'lumotlari, manzil va ish vaqti.
+         - VIP Club Newsletter obuna formasi va mualliflik huquqi (Copyright).
 */
